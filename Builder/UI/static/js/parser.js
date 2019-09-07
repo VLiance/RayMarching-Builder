@@ -48,11 +48,6 @@ float capsule( vec3 p, vec3 a, vec3 b, float r )
 			"name":"ellipsoid",
 			"arguments":[
 				{
-					"name":"distance to center",
-                    "type":"vec3",
-                    "required":true
-				},
-				{
 					"name":"radius",
                     "type":"vec3",
                     "required":true
@@ -72,7 +67,7 @@ float ellipsoid( in vec3 p, in vec3 r )
 			"arguments":[
 				{
 					"name":"s",
-                    "type":"vec3",
+                    "type":"float",
                     "required":true
 				}
             ],

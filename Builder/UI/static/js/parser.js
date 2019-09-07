@@ -1,18 +1,12 @@
 (function(){
-    let bLoaded = false;
     let app = {};
     // First load the data asynchronously
     $.getJSON( "static/data/data.json",function( data ) {
         checkConfiguration(data)
-    }).done(function( json ) {
-    	bLoaded = true;
-    }).fail(function( jqxhr, textStatus, error ) {
-	    bLaoded = true;
-	    alert("couldn't load resource");
-    });
-
-    //When the document is ready start the init function
-    $(document).ready(init);
+	//When the document is ready start the init function
+    	$(document).ready(init);
+    })
+    
 
     // Check app config file
     function checkConfiguration(data){
@@ -21,7 +15,6 @@
         $.each(distance_functions, function(key,value){
         //console.log("name of the functions: " + value["name"]);
         })
-		bLoaded = true;
     }
 
     // Init function
@@ -31,14 +24,6 @@
         // Set the initial view size
         setViewSize();
         $(window).resize(setViewSize);
-
-        // Wait until the configuration file has loads
-        while(!bLoaded){
-            if(app["show-loading"]) {
-                console.log("Loading the app configuration file");
-                app["show-loading"] = false;
-            }     
-        }
 
         // At this point the configuration file has been loaded and parse to a js object
         fillTools();

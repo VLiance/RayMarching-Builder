@@ -9,7 +9,7 @@
     }).fail(function( jqxhr, textStatus, error ) {
 	    bLaoded = true;
 	    alert("couldn't load resource");
-    };
+    });
 
     //When the document is ready start the init function
     $(document).ready(init);

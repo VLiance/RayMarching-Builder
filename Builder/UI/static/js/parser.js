@@ -1,4 +1,5 @@
 (function(){
+	var bLoaded = false;
     let app = {};
     // First load the data asynchronously
     $.getJSON( "static/data/data.json",function( data ) {
@@ -15,6 +16,7 @@
         $.each(distance_functions, function(key,value){
         //console.log("name of the functions: " + value["name"]);
         })
+		bLoaded = true;
     }
 
     // Init function
@@ -26,7 +28,7 @@
         $(window).resize(setViewSize);
 
         // Wait until the configuration file has loads
-        while($.isEmptyObject(app)){
+        while(!bLoaded){
             if(app["show-loading"]) {
                 console.log("Loading the app configuration file");
                 app["show-loading"] = false;

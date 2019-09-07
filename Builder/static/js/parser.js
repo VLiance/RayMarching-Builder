@@ -28,7 +28,7 @@
         $(window).resize(setViewSize);
 
         // Wait until the configuration file has loads
-        while($.isEmptyObject(app)){
+        while($.isEmptyObject(app) && app.hasOwnProperty("data")){
             if(app["show-loading"]) {
                 console.log("Loading the app configuration file");
                 app["show-loading"] = false;

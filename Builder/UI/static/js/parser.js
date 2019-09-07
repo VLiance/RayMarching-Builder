@@ -213,7 +213,7 @@ float octahedron( in vec3 p, in float s)
         // At this point the configuration file has been loaded and parse to a js object
         fillTools();
 
-        draw();
+        //draw();
     }
 
     function initParams(){
@@ -236,7 +236,7 @@ float octahedron( in vec3 p, in float s)
         cnvs.attr("width", newWidth);
         cnvs.attr("height", newHeight);
 
-        draw();
+        //draw();
     }
 
     function draw(){

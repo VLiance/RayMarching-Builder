@@ -35,7 +35,7 @@ body {
 #main-canvas{
     width:100%;
     height: auto;
-    background: #eeeeee;
+    //background: #eeeeee;
 }
 
 #toolbox, #properties{

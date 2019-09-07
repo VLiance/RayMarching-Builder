@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="static/css/main.css">
+    <!-- JQuery -->
+    <script src="static/js/jquery-3.4.1.min.js"></script>
+    <script src="static/js/parser.js"></script>
+    <title>Ray Marching Build</title>
+</head>
+<body>
+    <section id="top">
+        <div id="toolbox">
+            <ul id="tools-list" class="styled-box">
+                <li class="tools-section" id="tools-surfaces-section">
+                    <input type="checkbox" id="accordion-switch-surfaces" class="accordion-switch">
+                    <label class="accordion-title-label" for="accordion-switch-surfaces">
+                        <i class="accordion-toggle-icon"></i><span>Surfaces</span>
+                    </label>
+                    <ul id="tools-surfaces" class="sub-tool-list">
+                    </ul>
+                </li>
+                <li  class="tools-section" id="tools-unary-operators-section">
+                    <input type="checkbox" id="accordion-switch-unary" class="accordion-switch">
+                    <label class="accordion-title-label" for="accordion-switch-unary">
+                        <i class="accordion-toggle-icon"></i><span>Unary Operators</span>
+                    </label>
+                    <ul id="tools-unary-operators" class="sub-tool-list">
+                    </ul>
+                </li>
+                <li  class="tools-section" id="tools-binary-operators-section">
+                    <input type="checkbox" id="accordion-switch-binary" class="accordion-switch">
+                    <label class="accordion-title-label" for="accordion-switch-binary">
+                        <i class="accordion-toggle-icon"></i><span>Binary Operators</span>
+                    </label>
+                    <ul id="tools-binary-operators" class="sub-tool-list">
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div id="main-view">
+            <canvas id="main-canvas"></canvas>
+        </div>
+        <div id="properties">
+            <div id="properties-form"></div>
+            <ul id="objects-list" class="styled-box">
+                <li>No objects</li>
+            </ul>
+        </div>
+    </section>
+</body>
+</html>

@@ -1,0 +1,196 @@
+* {
+    box-sizing: border-box;
+}
+  
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+  
+body {
+    font: 17px/1.5 "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    background: white;
+    margin: 0;
+    color: #333333;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#top {
+    height:100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+#main-view{
+    background: transparent;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+    font: "Red Hat Display";
+}
+
+#main-canvas{
+    width:100%;
+    height: auto;
+    background: #eeeeee;
+}
+
+#toolbox, #properties{
+    flex: initial;
+    width: 200px;
+    background: #fdfdfd;
+    border-right: 1px solid #eee;
+    height: 100%;
+    overflow-y: auto;
+}
+
+#tools-list{
+    padding: 1.5em 1em;
+
+}
+
+#tools-list>li{
+    list-style: none;
+}
+
+#tools-list>li>a{
+    text-decoration: none;
+    color: #333333;
+}
+
+.styled-box{
+    border-radius: 2px;
+    border: 1px solid #efefef;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 1px 3px 0 #eee;
+    background: #fdfdfd;
+    margin: 1em;
+}
+
+.form-box{
+    padding: 1em;
+}
+
+.form-box h4{
+    font-size: 0.7em;
+    text-transform: capitalize;
+    margin: 0.5em auto;
+}
+
+.form-box>fieldset input[type="number"]:focus, 
+.form-box>fieldset input[type="text"]:focus,
+.form-box>fieldset textarea:focus{
+    outline: none;
+    border: 1px solid #333333;
+}
+
+.form-box>fieldset input[type="number"]:focus,
+.form-box>fieldset textarea:focus{
+    background: #fff;
+}
+
+.form-box>fieldset{
+    margin:0 auto;
+    color: #333333;
+    border: 1px solid #333333;
+    border-radius: 3px;
+}
+
+.form-box>fieldset>legend{
+    text-transform: capitalize;
+}
+
+
+.form-box>fieldset input[type="number"],
+.form-box>fieldset input[type="text"]{
+    width:100px;
+    border-radius: 3px;
+    padding: 0 5px;
+    border: 1px solid #c2c2c2;
+    text-align: center;
+    background: #f7f7f7;
+}
+
+.form-box>fieldset input[type="submit"]{
+    display: inline-block;
+    border: none;
+    background-color: #27292a;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    color: #fff;
+    padding: 10px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin-top: 5px;
+}
+
+
+.form-box>fieldset>div {
+    margin: 5px auto;
+}
+
+.sub-tool-list{
+    overflow: hidden;
+    transition: max-height 0.5s;
+    max-height: 0;
+    margin: 0;
+    margin-left: 15px;
+    padding: 0;
+}
+
+.sub-tool-list>li {
+    list-style: none;
+    font-size: 0.8em;
+}
+
+.sub-tool-list>li>a {
+    text-decoration: none;
+    text-transform: capitalize;
+    color: #333333;
+}
+
+.accordion-title-label{
+    cursor: pointer;
+}
+.accordion-switch{
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    opacity: 0;
+}
+ 
+/* Toggled State */
+.accordion-switch:checked ~ .sub-tool-list {
+    max-height: 10em;
+}
+
+.accordion-switch:checked ~ label>.accordion-toggle-icon:before{
+    content: "-";
+}
+
+
+.accordion-toggle-icon{
+    margin-right: 5px;
+}
+
+.accordion-toggle-icon:before{
+    display: inline-block;
+    content: "+";
+    width: 10px;
+    text-align: center;
+}
+
+.sub-tool-list>li{
+    padding-left: 5px;
+    position: relative;
+}
+
+/**
+*   Icons
+**/
+
+.icon-delete{
+    margin-left: 10px;
+}

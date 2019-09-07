@@ -1,0 +1,29 @@
+{
+  "name": "raymarchingbuilder",
+  "version": "0.0.0",
+  "description": "RayMarchingBuilder is a web tool that will help in the creation of objects using mathematically defined surfaces instead of the usual mesh. The tool will help in the creation of objects using more intuitive inputs like the mouse and the keyboard. The result will be saved in a shader file",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Maeiky/RayMarchingBuilder.git"
+  },
+  "keywords": [
+    "Ray",
+    "marching",
+    "3d",
+    "opengl"
+  ],
+  "author": "invalidipnan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Maeiky/RayMarchingBuilder/issues"
+  },
+  "homepage": "https://github.com/Maeiky/RayMarchingBuilder#readme",
+  "dependencies": {
+    "koa": "^2.8.1"
+  },
+  "devDependencies": {}
+}

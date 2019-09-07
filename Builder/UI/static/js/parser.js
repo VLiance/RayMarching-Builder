@@ -1,24 +1,214 @@
+const appData = {
+	"distance_functions":[
+		{
+			"name":"sphere",
+			"arguments":[
+				{
+					"name":"radius",
+					"type":"float",
+					"required":true
+				}
+            ],
+            "function": `
+float sphere( vec3 p, float s )
+{
+    return length(p)-s;
+}
+`
+		},
+		{
+			"name":"capsule",
+			"arguments":[
+				{
+					"name":"a",
+                    "type":"vec3",
+                    "required":true
+				},
+				{
+					"name":"b",
+                    "type":"vec3",
+                    "required":true
+				},
+				{
+					"name":"radius",
+                    "type":"float",
+                    "required":true
+				}
+            ],
+            "function": `
+float capsule( vec3 p, vec3 a, vec3 b, float r )
+{
+    vec3 pa = p - a, ba = b - a;
+    float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
+    return length( pa - ba*h ) - r;
+}
+            `
+		},
+		{
+			"name":"ellipsoid",
+			"arguments":[
+				{
+					"name":"distance to center",
+                    "type":"vec3",
+                    "required":true
+				},
+				{
+					"name":"radius",
+                    "type":"vec3",
+                    "required":true
+				}
+            ],
+            "function": `
+float ellipsoid( in vec3 p, in vec3 r )
+{
+    float k0 = length(p/r);
+    float k1 = length(p/(r*r));
+    return k0*(k0-1.0)/k1;
+}
+            `
+		},
+		{
+			"name":"octahedron",
+			"arguments":[
+				{
+					"name":"s",
+                    "type":"vec3",
+                    "required":true
+				}
+            ],
+            "function": `
+float octahedron( in vec3 p, in float s)
+{
+    p = abs(p);
+    float m = p.x+p.y+p.z-s;
+    vec3 q;
+            if( 3.0*p.x < m ) q = p.xyz;
+    else if( 3.0*p.y < m ) q = p.yzx;
+    else if( 3.0*p.z < m ) q = p.zxy;
+    else return m*0.57735027;
+    
+    float k = clamp(0.5*(q.z-q.y+s),0.0,s); 
+    return length(vec3(q.x,q.y-s+k,q.z-k)); 
+}
+            `
+		}
+	],
+	"unary_operators":[
+		{
+			"name":"scale",
+			"arguments":[
+				{
+					"name":"p",
+                    "type":"vec3",
+                    "required":true
+				},
+				{
+					"name":"s",
+                    "type":"float",
+                    "required":true
+				}
+			]
+		},
+		{
+			"name":"repetition",
+			"arguments":[
+				{
+					"name":"p",
+                    "type":"vec3",
+                    "required":true
+				},
+				{
+					"name":"c",
+                    "type":"vec3",
+                    "required":true
+				}
+			]
+		},
+		{
+			"name":"displacement",
+			"arguments":[
+				{
+					"name":"displacement vector",
+                    "type":"vec3",
+                    "required":true
+				}
+			]
+		},
+		{
+			"name":"twist",
+			"arguments":[
+				{
+					"name":"twist vector",
+                    "type":"vec3",
+                    "required":true
+				},
+				{
+					"name":"factor",
+                    "type":"float",
+                    "required":true
+				}
+			]
+		}
+	],
+	"binary_operators":[
+		{
+			"name":"union",
+			"arguments":[
+
+			]
+		},
+		{
+			"name":"subtraction",
+			"arguments":[
+
+			]
+		},
+		{
+			"name":"intersection",
+			"arguments":[
+
+			]
+		},
+		{
+			"name":"smooth union",
+			"arguments":[
+				{
+					"name":"factor",
+					"type":"float"
+				}
+			]
+		},
+		{
+			"name":"smooth subtraction",
+			"arguments":[
+				{
+					"name":"factor",
+					"type":"float"
+				}
+			]
+		},
+		{
+			"name":"smooth intersection",
+			"arguments":[
+				{
+					"name":"factor",
+					"type":"float"
+				}
+			]
+		}
+	]
+};
+
 (function(){
     let app = {};
-    // First load the data asynchronously
-    $.getJSON( "static/data/data.json",function( data ) {
-        checkConfiguration(data)
-	//When the document is ready start the init function
-    	$(document).ready(init);
-    })
-    
-
-    // Check app config file
-    function checkConfiguration(data){
-        app["data"]= data;
-        let distance_functions = data["distance_functions"]
-        $.each(distance_functions, function(key,value){
-        //console.log("name of the functions: " + value["name"]);
-        })
-    }
+    $(document).ready(init);
 
     // Init function
     function init(){
+        // Load the data
+        app["data"] = appData;
+        // Number of decimals for floats
+        app["floatPrecision"] = 3
         // Set the event listener for viewport changing
         initParams();
         // Set the initial view size
@@ -358,7 +548,7 @@
             let value = input.val();
 
             if (typeof value !== 'undefined' && !Number.isNaN(value)) {
-                validArguments[i]= parseFloat(value);
+                validArguments[i]= parseFloat(value).toFixed(app.floatPrecision);
             } else {
                 valid = false;
                 break;
@@ -415,6 +605,7 @@
             li.appendChild(deleteLink);
 
             objectsListNode.append($(li));
+            console.log(objList);
         }
     }
 
@@ -451,6 +642,7 @@
         shader+= viewMatrix();
         shader+= mainShader();
         console.log(shader);
+        return shader;
     }
 
     function defineScene(objUuIDList, objListDefinition){
@@ -489,17 +681,41 @@
             if(!primitives.has(type)){
                 primitives.set(type, true);
                 let cleanUuID = "obj"+obj.uuid.replace(/-/g,'');
-                objectDistFunc = ""+cleanUuID+" = "+type+"(p); \n";
+                objectDistFunc = ""+cleanUuID+" = "+type+"(p";
+
+                Object.values(obj.properties).forEach(function(argument) {
+                    console.log(argument);
+                    objectDistFunc += ",";
+                    switch(argument.length){
+                        case 1:
+                            objectDistFunc += argument[0];
+                            break;
+                        case 2:
+                            objectDistFunc +="vec2("+argument.join(',')+")";
+                            break;
+                        case 3:
+                            objectDistFunc +="vec3("+argument.join(',')+")";
+                            break;
+                        case 4:
+                            objectDistFunc +="vec4("+argument.join(',')+")";
+                            break;
+                    }
+                });
+
+                objectDistFunc+="); \n";
             }
         }
+
         return {"objectDistFunc" : objectDistFunc,"primitives" : primitives};
     }
 
     function definePrimitives(){
-        return  `
-float sphere(vec3 p) {
-    return length(p) - 1.0;
-}`;
+        let distanceFunction = app["data"]["distance_functions"];
+        let result = "\n";
+        distanceFunction.forEach(function(fun){
+            result+=fun["function"] + "\n";
+        })
+        return result;
     }
 
     function defineConstants(){

@@ -1,10 +1,15 @@
 (function(){
-	var bLoaded = false;
+    let bLoaded = false;
     let app = {};
     // First load the data asynchronously
     $.getJSON( "static/data/data.json",function( data ) {
         checkConfiguration(data)
-    });
+    }).done(function( json ) {
+    	bLoaded = true;
+    }).fail(function( jqxhr, textStatus, error ) {
+	    bLaoded = true;
+	    alert("couldn't load resource");
+    };
 
     //When the document is ready start the init function
     $(document).ready(init);

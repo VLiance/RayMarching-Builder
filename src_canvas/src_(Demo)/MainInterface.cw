@@ -34,6 +34,11 @@ package  {
 	import GZ.Base.Mat4x4;
 	import GZ.Base.Perspective;
 	
+	import GZ.Gpu.ShaderModel.GzModel.GzShModel_Quad;
+	import GZ.Gpu.ShaderModel.GzModel.GzShModel_Shadertoy;
+	import GZ.Gpu.ShaderModel.GzModel.GzShModel_Raymarching;
+	import GZ.Gpu.ShaderModel.GzModel.GzShModel;
+	
 	/*
 	<cpp>
 		int oRcObj_Rc_GZ_RcEngine_Transform_png;
@@ -48,6 +53,8 @@ package  {
 		use Window.eWinBorder;
 		
 		public var oDemo : Clip;
+		
+
 	//	public var oFps : FpsCount;
 		
 //		public var oImg : Img;
@@ -80,6 +87,13 @@ package  {
 			
 			//fCreateInterface();
 			fCreateInterface(300,100);
+		}
+		
+		
+		override public function fLoadShader():Bool {
+		///	oGzShModel = new GzShModel_Shadertoy();
+			oGzShModel = new GzShModel_Raymarching();
+			return false; 
 		}
 		
 		override public function fWinStart():Void {

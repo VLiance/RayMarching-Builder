@@ -618,6 +618,7 @@ float octahedron( in vec3 p, in float s)
         shader+= viewMatrix();
         shader+= mainShader();
         console.log(shader);
+        Module.UpdateFragmentShader(shader);
         return shader;
     }
 

@@ -93,16 +93,13 @@ float octahedron( in vec3 p, in float s)
 			"name":"scale",
 			"arguments":[
 				{
-					"name":"p",
-                    "type":"vec3",
-                    "required":true
-				},
-				{
 					"name":"s",
                     "type":"float",
                     "required":true
-				}
-			]
+                }
+            ],
+            "pTransform": "#p#/#s#",
+            "funTransform": "#s#*#f#"
         },
         {
 			"name":"translation",
@@ -112,7 +109,8 @@ float octahedron( in vec3 p, in float s)
                     "type":"vec3",
                     "required":true
 				}
-			]
+            ],
+            "pTransform": "#p# - #t#"
 		},
 		{
 			"name":"repetition",
@@ -122,33 +120,31 @@ float octahedron( in vec3 p, in float s)
                     "type":"vec3",
                     "required":true
 				}
-			]
+            ],
+            "pTransform": "mod(#p#,#c#)-0.5*#c#"
 		},
 		{
 			"name":"displacement",
 			"arguments":[
 				{
-					"name":"displacement vector",
-                    "type":"vec3",
+					"name":"k",
+                    "type":"float",
                     "required":true
 				}
-			]
+            ],
+            "funTransform": "#f#+sin(#k#*p.x)*sin(#k#*p.y)*sin(#k#*p.z)"
 		},
 		{
 			"name":"twist",
 			"arguments":[
 				{
-					"name":"twist vector",
-                    "type":"vec3",
-                    "required":true
-				},
-				{
-					"name":"factor",
+					"name":"k",
                     "type":"float",
                     "required":true
 				}
-			]
-		}
+            ],
+            "pTransform": "vec3(mat2(cos(#k#*#p#.y),-sin(#k#*#p#.y),sin(#k#*#p#.y),cos(#k#*#p#.y))*#p#.xz,#p#.y)"
+        }
 	],
 	"binary_operators":[
 		{
@@ -357,6 +353,12 @@ float octahedron( in vec3 p, in float s)
                         let operation = {};
                         operation["name"] = name;
                         operation["arguments"] = validateArgTypes(elem);
+                        if(elem.hasOwnProperty("pTransform")) {
+                            operation["pTransform"] = elem["pTransform"]
+                        }
+                        if(elem.hasOwnProperty("funTransform")) {
+                            operation["funTransform"] = elem["funTransform"]
+                        }
                         // If object has no operations, create the operations array
                         if(!object.hasOwnProperty("operations")){
                             object["operations"] = [];
@@ -647,56 +649,72 @@ float octahedron( in vec3 p, in float s)
     }
 
     function createObjectDistanceFunction(obj){
-        let distanceFunctions = app["data"]["distance_functions"];
         let primitives = new Map();
-        let objectDistFunc;
+        let irreductibleObjectList = [];
+        let objectDistFunc="";
         if(obj.hasOwnProperty("binaryOperation")) {
-            //Recursive call
+            
         } else{
             let type = obj["originalType"];
 
             if(!primitives.has(type)){
                 primitives.set(type, true);
-                let cleanUuID = "obj"+obj.uuid.replace(/-/g,'');
-                objectDistFunc = ""+cleanUuID+" = "+type+"(";
-                let position = "p";
-                let args;
-                console.log(obj)
-                if(obj.hasOwnProperty("operations")){
-                    let uoperations = obj["operations"];
-                    uoperations.forEach(function(uoperation){
-                        console.log(uoperation)
-                        switch(uoperation.name){
-                            case "translation":
-                                args = uoperation.arguments;
-                                for (let [key, value] of Object.entries(args)) {
-                                    position+="-"+argumentArrayToShaderStruct(value);
-                                }
-                            break;
-                            
-                            case "repetition":
-                                args = uoperation.arguments;
-                                let q;
-                                for (let [key, value] of Object.entries(args)) {
-                                    let c = argumentArrayToShaderStruct(value);
-                                    position="mod("+position+","+c+") - 0.5*"+c;
-                                    break;
-                                }
-                                break;
-                        }
-                    });
-                }
-                objectDistFunc+=position;
-                Object.values(obj.properties).forEach(function(argument){
-                    objectDistFunc += ",";
-                    objectDistFunc += argumentArrayToShaderStruct(argument);
-                });
-
-                objectDistFunc+="); \n";
+                irreductibleObjectList.push(irreductibleObject(obj));
             }
         }
 
+        objectDistFunc+=irreductibleObjectList.join("\n");
+        objectDistFunc+="\n"
+
         return {"objectDistFunc" : objectDistFunc,"primitives" : primitives};
+    }
+
+    function irreductibleObject(obj) {
+        let type = obj["originalType"];
+        let cleanUuID = "obj"+obj.uuid.replace(/-/g,'');
+        let objectDistFunc = "    "+cleanUuID+" = ";
+        let objFun = type + "(";
+        let position = "#p#";
+        let fun = "#f#";
+        let args;
+
+        if(obj.hasOwnProperty("operations")){
+            let uoperations = obj["operations"];             
+            uoperations.forEach(function(uoperation){
+                args = uoperation.arguments;
+                if(uoperation.hasOwnProperty("pTransform")){
+                    let transform = uoperation["pTransform"];
+                    position = position.replace(/#p#/g, transform);
+                    for (let [key, value] of Object.entries(args)) {
+                        let regex = new RegExp("#"+key+"#","g");
+                        position = position.replace(regex,argumentArrayToShaderStruct(value));
+                    }
+                }
+
+                if(uoperation.hasOwnProperty("funTransform")){
+                    let transform = uoperation["funTransform"];
+                    fun = fun.replace(/#f#/g, transform);
+                    for (let [key, value] of Object.entries(args)) {
+                        let regex = new RegExp("#"+key+"#","g");
+                        fun = fun.replace(regex,argumentArrayToShaderStruct(value));
+                    }
+                }
+            });
+            position = position.replace(/#p#/g,"p");
+        }
+
+        objFun+=position;
+        Object.values(obj.properties).forEach(function(argument){
+            objFun += ",";
+            objFun += argumentArrayToShaderStruct(argument);
+        });
+
+        objFun+=")";
+
+        objectDistFunc+=fun.replace(/#f#/g,objFun);
+        objectDistFunc+=";\n";
+
+        return objectDistFunc;
     }
 
     function argumentArrayToShaderStruct(argument){

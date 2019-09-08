@@ -553,10 +553,9 @@ var Sandbox = {
         };
       };
 
-
 	  
-   //////////////////////////  GZE   ///////////////////////////////////
-
+	  
+	  
 	class GZE_Context {
 		bInitialised = false;
 		constructor() {
@@ -564,21 +563,15 @@ var Sandbox = {
 
 		Initialised() {
 			this.bInitialised = true;
-			console.log("JS: GZE Initialised");
-			//alert("GZE Initialised");
-		}
-
-		After200Frames() {
-			Module.UpdateFragmentShader('aaaa');
+			//console.log("JS: GZE Initialised");
 		}
 	}
+	  
+	/////////////////////////// /////////////////////////// /////////////////////////// 
+   /////////////////////////// FPS METER ///////////////////////////////////
 
-   
 	function Shell_OnLoad() {
-		
 			window.GZE = new GZE_Context();
-
-			
 			window.meter = new FPSMeter( document.getElementById('FpsDiv'), {
 				interval:  100,     // Update interval in milliseconds.
 				smoothing: 10,      // Spike smoothing strength. 1 means no smoothing.

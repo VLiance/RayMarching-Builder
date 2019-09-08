@@ -442,7 +442,7 @@ var Sandbox = {
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
    
-   		document.getElementById("canvas").onclick = function(e) {
+   		document.getElementById("gze_canvas").onclick = function(e) {
 		    document.getElementById("outputContainer").style.zIndex=0;
 		}
 		    
@@ -508,7 +508,7 @@ var Sandbox = {
           }
         },
         canvas: (function() {
-          var canvas = document.getElementById('canvas');
+          var canvas = document.getElementById('gze_canvas');
 
           // As a default initial behavior, pop up an alert when webgl context is lost. To make your
           // application robust, you may want to override this behavior before shipping!
@@ -553,10 +553,9 @@ var Sandbox = {
         };
       };
 
-
 	  
-   //////////////////////////  GZE   ///////////////////////////////////
-
+	  
+	  
 	class GZE_Context {
 		bInitialised = false;
 		constructor() {
@@ -564,21 +563,15 @@ var Sandbox = {
 
 		Initialised() {
 			this.bInitialised = true;
-			console.log("JS: GZE Initialised");
-			//alert("GZE Initialised");
-		}
-
-		After200Frames() {
-			Module.UpdateFragmentShader('aaaa');
+			//console.log("JS: GZE Initialised");
 		}
 	}
+	  
+	/////////////////////////// /////////////////////////// /////////////////////////// 
+   /////////////////////////// FPS METER ///////////////////////////////////
 
-   
 	function Shell_OnLoad() {
-		
 			window.GZE = new GZE_Context();
-
-			
 			window.meter = new FPSMeter( document.getElementById('FpsDiv'), {
 				interval:  100,     // Update interval in milliseconds.
 				smoothing: 10,      // Spike smoothing strength. 1 means no smoothing.

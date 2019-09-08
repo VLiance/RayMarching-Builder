@@ -237,6 +237,8 @@ float octahedron( in vec3 p, in float s)
         // Styling values
         cnvs.height(newHeight);
         cnvs.width(newWidth);
+	cnvs.attr("width", newWidth.toString());
+	cnvs.attr("height", newHeight.toString());
         // Html values
         cnvs.attr("width", newWidth);
         cnvs.attr("height", newHeight);

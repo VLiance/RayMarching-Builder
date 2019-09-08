@@ -103,15 +103,20 @@ float octahedron( in vec3 p, in float s)
                     "required":true
 				}
 			]
+        },
+        {
+			"name":"translation",
+			"arguments":[
+				{
+					"name":"t",
+                    "type":"vec3",
+                    "required":true
+				}
+			]
 		},
 		{
 			"name":"repetition",
 			"arguments":[
-				{
-					"name":"p",
-                    "type":"vec3",
-                    "required":true
-				},
 				{
 					"name":"c",
                     "type":"vec3",
@@ -377,7 +382,8 @@ float octahedron( in vec3 p, in float s)
                         let object = objList.get(uuid);
                         console.log("u"+name)
                         let operation = {};
-                        operation[name]= validateArgTypes(elem);
+                        operation["name"] = name;
+                        operation["arguments"] = validateArgTypes(elem);
                         // If object has no operations, create the operations array
                         if(!object.hasOwnProperty("operations")){
                             object["operations"] = [];
@@ -387,6 +393,8 @@ float octahedron( in vec3 p, in float s)
                         // Update
                         objList.set(uuid,object);
                         console.log(objList)
+                        updateObjectsList();
+                        generateShader();
                     }
                 break;
                 case "binary-operators":
@@ -676,25 +684,38 @@ float octahedron( in vec3 p, in float s)
             if(!primitives.has(type)){
                 primitives.set(type, true);
                 let cleanUuID = "obj"+obj.uuid.replace(/-/g,'');
-                objectDistFunc = ""+cleanUuID+" = "+type+"(p";
-
-                Object.values(obj.properties).forEach(function(argument) {
-                    console.log(argument);
+                objectDistFunc = ""+cleanUuID+" = "+type+"(";
+                let position = "p";
+                let args;
+                console.log(obj)
+                if(obj.hasOwnProperty("operations")){
+                    let uoperations = obj["operations"];
+                    uoperations.forEach(function(uoperation){
+                        console.log(uoperation)
+                        switch(uoperation.name){
+                            case "translation":
+                                args = uoperation.arguments;
+                                for (let [key, value] of Object.entries(args)) {
+                                    position+="-"+argumentArrayToShaderStruct(value);
+                                }
+                            break;
+                            
+                            case "repetition":
+                                args = uoperation.arguments;
+                                let q;
+                                for (let [key, value] of Object.entries(args)) {
+                                    let c = argumentArrayToShaderStruct(value);
+                                    position="mod("+position+","+c+") - 0.5*"+c;
+                                    break;
+                                }
+                                break;
+                        }
+                    });
+                }
+                objectDistFunc+=position;
+                Object.values(obj.properties).forEach(function(argument){
                     objectDistFunc += ",";
-                    switch(argument.length){
-                        case 1:
-                            objectDistFunc += argument[0];
-                            break;
-                        case 2:
-                            objectDistFunc +="vec2("+argument.join(',')+")";
-                            break;
-                        case 3:
-                            objectDistFunc +="vec3("+argument.join(',')+")";
-                            break;
-                        case 4:
-                            objectDistFunc +="vec4("+argument.join(',')+")";
-                            break;
-                    }
+                    objectDistFunc += argumentArrayToShaderStruct(argument);
                 });
 
                 objectDistFunc+="); \n";
@@ -702,6 +723,26 @@ float octahedron( in vec3 p, in float s)
         }
 
         return {"objectDistFunc" : objectDistFunc,"primitives" : primitives};
+    }
+
+    function argumentArrayToShaderStruct(argument){
+        let shaderStruct = "";
+        switch(argument.length){
+            case 1:
+                shaderStruct += argument[0];
+                break;
+            case 2:
+                shaderStruct +="vec2("+argument.join(',')+")";
+                break;
+            case 3:
+                shaderStruct +="vec3("+argument.join(',')+")";
+                break;
+            case 4:
+                shaderStruct +="vec4("+argument.join(',')+")";
+                break;
+        }
+
+        return shaderStruct;
     }
 
     function definePrimitives(){
@@ -883,7 +924,7 @@ mat4 viewMatrix(vec3 eye, vec3 center, vec3 up) {
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
 	vec3 viewDir = rayDirection(45.0, iResolution.xy, fragCoord);
-    vec3 eye = vec3(8.0, 5.0, 7.0);
+    vec3 eye = vec3(0.0, 0.0, 10.0);
     
     mat4 viewToWorld = viewMatrix(eye, vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0));
     

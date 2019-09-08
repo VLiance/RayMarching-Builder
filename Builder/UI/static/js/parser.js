@@ -229,7 +229,7 @@ float octahedron( in vec3 p, in float s)
 
     function setViewSize(factor){
         const window = $("#top");
-        let cnvs= $("#main-canvas");
+        let cnvs= $("#gze_canvas");
         let newWidth = cnvs.width();
         let newHeight = Math.min(cnvs.width()*(1/app["aspect-ratio"]),window.height());
         app["width"] = newWidth;
@@ -240,33 +240,6 @@ float octahedron( in vec3 p, in float s)
         // Html values
         cnvs.attr("width", newWidth);
         cnvs.attr("height", newHeight);
-
-        //draw();
-    }
-
-    function draw(){
-        const c = app["canvas"];
-        const w = app["width"];
-        const h = app["height"];
-        const ctx = c.getContext("2d");
-        // Title
-        let titleSizeFactor = 19;
-        ctx.textAlign = "center";
-        ctx.font = Math.round(w/titleSizeFactor)+"px Red Hat Display";
-        ctx.fillStyle = "#333333";
-        const title = "Ray Marching";
-        ctx.fillText( title, w/2, h/2);
-        // Description
-        let descriptionSizeFactor = 59;
-        ctx.textAlign = "center";
-        ctx.font = Math.round(w/descriptionSizeFactor)+"px Red Hat Display";
-        ctx.fillStyle = "#333333";
-        const description = "Where rays intersect";
-        ctx.fillText( description, w/2, h/2 + 40);
-        ctx.beginPath();
-        ctx.moveTo(w/2-150, h/2+20);
-        ctx.lineTo(w/2+150, h/2+20);
-        ctx.stroke();
     }
 
     function fillTools(){
@@ -645,6 +618,7 @@ float octahedron( in vec3 p, in float s)
         shader+= viewMatrix();
         shader+= mainShader();
         console.log(shader);
+        Module.UpdateFragmentShader(shader);
         return shader;
     }
 

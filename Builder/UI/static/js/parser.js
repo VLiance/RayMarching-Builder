@@ -229,7 +229,7 @@ float octahedron( in vec3 p, in float s)
 
     function setViewSize(factor){
         const window = $("#top");
-        let cnvs= $("#gze-canvas");
+        let cnvs= $("#gze_canvas");
         let newWidth = cnvs.width();
         let newHeight = Math.min(cnvs.width()*(1/app["aspect-ratio"]),window.height());
         app["width"] = newWidth;
@@ -237,8 +237,6 @@ float octahedron( in vec3 p, in float s)
         // Styling values
         cnvs.height(newHeight);
         cnvs.width(newWidth);
-	cnvs.attr("width", newWidth.toString());
-	cnvs.attr("height", newHeight.toString());
         // Html values
         cnvs.attr("width", newWidth);
         cnvs.attr("height", newHeight);

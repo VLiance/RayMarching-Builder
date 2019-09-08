@@ -195,7 +195,7 @@ Module['FS_createPath']('/Rc', 'Fonts', true, true);
   }
 
  }
- loadPackage({"files": [{"start": 0, "audio": 0, "end": 41208, "filename": "/Rc/Fonts/Proggy.ttf"}, {"start": 41208, "audio": 0, "end": 76864, "filename": "/Rc/Fonts/ProggyTiny.ttf"}], "remote_package_size": 76864, "package_uuid": "bd0a9c2c-ac21-4335-a2b1-ce878f5e7948"});
+ loadPackage({"files": [{"start": 0, "audio": 0, "end": 41208, "filename": "/Rc/Fonts/Proggy.ttf"}, {"start": 41208, "audio": 0, "end": 76864, "filename": "/Rc/Fonts/ProggyTiny.ttf"}], "remote_package_size": 76864, "package_uuid": "f6e1303c-5942-4aaf-b5af-d92977ae7227"});
 
 })();
 

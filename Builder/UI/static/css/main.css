@@ -24,7 +24,6 @@ body {
 }
 
 #main-view{
-		
     background: transparent;
     display: flex;
     align-items: center;
@@ -33,15 +32,10 @@ body {
     font: "Red Hat Display";
 }
 
-#outputContainer{
-	padding-right: 200px;
-}
-
-#main-canvas{
-
+#gze_canvas{
     width:100%;
     height: auto;
-    //background: #eeeeee;
+    background: #eeeeee;
 }
 
 #toolbox, #properties{

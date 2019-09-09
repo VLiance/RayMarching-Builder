@@ -91,9 +91,9 @@ package  {
 		
 		
 		override public function fLoadShader():Bool {
-		///	oGzShModel = new GzShModel_Shadertoy();
-			oGzShModel = new GzShModel_Raymarching();
-			return false; 
+			oGzShModel = new GzShModel_Shadertoy();
+			//oGzShModel = new GzShModel_Raymarching();
+			return true; 
 		}
 		
 		override public function fWinStart():Void {

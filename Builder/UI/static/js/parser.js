@@ -700,9 +700,11 @@ float octahedron( in vec3 p, in float s)
                     }
                 }
             });
-            position = position.replace(/#p#/g,"p");
+            
         }
-
+	// Replace #p# by p
+	position = position.replace(/#p#/g,"p");
+	// Add the position parameter to the object function
         objFun+=position;
         Object.values(obj.properties).forEach(function(argument){
             objFun += ",";

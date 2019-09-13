@@ -195,7 +195,7 @@ Module['FS_createPath']('/Rc', 'Fonts', true, true);
   }
 
  }
- loadPackage({"files": [{"start": 0, "audio": 0, "end": 41208, "filename": "/Rc/Fonts/Proggy.ttf"}, {"start": 41208, "audio": 0, "end": 76864, "filename": "/Rc/Fonts/ProggyTiny.ttf"}], "remote_package_size": 76864, "package_uuid": "63ef425e-f8cf-4c51-8d09-e619625e85a1"});
+ loadPackage({"files": [{"start": 0, "audio": 0, "end": 41208, "filename": "/Rc/Fonts/Proggy.ttf"}, {"start": 41208, "audio": 0, "end": 76864, "filename": "/Rc/Fonts/ProggyTiny.ttf"}], "remote_package_size": 76864, "package_uuid": "f9d57cd5-1a05-4b6c-945c-bfab9fbe5d55"});
 
 })();
 
@@ -1432,11 +1432,11 @@ function updateGlobalBufferViews() {
 
 
 var STATIC_BASE = 1024,
-    STACK_BASE = 98048,
+    STACK_BASE = 98928,
     STACKTOP = STACK_BASE,
-    STACK_MAX = 5340928,
-    DYNAMIC_BASE = 5340928,
-    DYNAMICTOP_PTR = 97792;
+    STACK_MAX = 5341808,
+    DYNAMIC_BASE = 5341808,
+    DYNAMICTOP_PTR = 98672;
 
 assert(STACK_BASE % 16 === 0, 'stack must start aligned');
 assert(DYNAMIC_BASE % 16 === 0, 'heap must start aligned');
@@ -1891,8 +1891,8 @@ Module['asm'] = function(global, env, providedBuffer) {
   ;
   // import table
   env['table'] = wasmTable = new WebAssembly.Table({
-    'initial': 31104,
-    'maximum': 31104,
+    'initial': 31360,
+    'maximum': 31360,
     'element': 'anyfunc'
   });
   env['__memory_base'] = 1024; // tell the memory segments where to place themselves
@@ -1906,7 +1906,8 @@ Module['asm'] = function(global, env, providedBuffer) {
 // === Body ===
 
 var ASM_CONSTS = [function() { if (!!window.WebGLRenderingContext) { var names = (['webgl2', 'webgl', 'experimental-webgl', 'moz-webgl']); var gl = false; var canvas = document.createElement("canvas"); for(var i in names) { try { gl = canvas.getContext(names[i]); if (gl && typeof gl.getParameter == "function") { return i; } } catch(e) {} } return -1; } return -2; },
- function($0) { OpenGL.clear($0); }];
+ function($0) { OpenGL.clear($0); },
+ function() { Module['noExitRuntime'] = true }];
 
 function _emscripten_asm_const_i(code) {
   return ASM_CONSTS[code]();
@@ -1919,7 +1920,7 @@ function _emscripten_asm_const_ii(code, a0) {
 
 
 
-// STATICTOP = STATIC_BASE + 97024;
+// STATICTOP = STATIC_BASE + 97904;
 /* global initializers */  __ATINIT__.push({ func: function() { globalCtors() } });
 
 
@@ -1930,7 +1931,7 @@ function _emscripten_asm_const_ii(code, a0) {
 
 
 /* no memory initializer */
-var tempDoublePtr = 98032
+var tempDoublePtr = 98912
 assert(tempDoublePtr % 8 == 0);
 
 function copyTempFloat(ptr) { // functions, because inlining this code increases code size too much
@@ -3329,11 +3330,11 @@ function copyTempDouble(ptr) {
   
   var ERRNO_CODES={EPERM:1,ENOENT:2,ESRCH:3,EINTR:4,EIO:5,ENXIO:6,E2BIG:7,ENOEXEC:8,EBADF:9,ECHILD:10,EAGAIN:11,EWOULDBLOCK:11,ENOMEM:12,EACCES:13,EFAULT:14,ENOTBLK:15,EBUSY:16,EEXIST:17,EXDEV:18,ENODEV:19,ENOTDIR:20,EISDIR:21,EINVAL:22,ENFILE:23,EMFILE:24,ENOTTY:25,ETXTBSY:26,EFBIG:27,ENOSPC:28,ESPIPE:29,EROFS:30,EMLINK:31,EPIPE:32,EDOM:33,ERANGE:34,ENOMSG:42,EIDRM:43,ECHRNG:44,EL2NSYNC:45,EL3HLT:46,EL3RST:47,ELNRNG:48,EUNATCH:49,ENOCSI:50,EL2HLT:51,EDEADLK:35,ENOLCK:37,EBADE:52,EBADR:53,EXFULL:54,ENOANO:55,EBADRQC:56,EBADSLT:57,EDEADLOCK:35,EBFONT:59,ENOSTR:60,ENODATA:61,ETIME:62,ENOSR:63,ENONET:64,ENOPKG:65,EREMOTE:66,ENOLINK:67,EADV:68,ESRMNT:69,ECOMM:70,EPROTO:71,EMULTIHOP:72,EDOTDOT:73,EBADMSG:74,ENOTUNIQ:76,EBADFD:77,EREMCHG:78,ELIBACC:79,ELIBBAD:80,ELIBSCN:81,ELIBMAX:82,ELIBEXEC:83,ENOSYS:38,ENOTEMPTY:39,ENAMETOOLONG:36,ELOOP:40,EOPNOTSUPP:95,EPFNOSUPPORT:96,ECONNRESET:104,ENOBUFS:105,EAFNOSUPPORT:97,EPROTOTYPE:91,ENOTSOCK:88,ENOPROTOOPT:92,ESHUTDOWN:108,ECONNREFUSED:111,EADDRINUSE:98,ECONNABORTED:103,ENETUNREACH:101,ENETDOWN:100,ETIMEDOUT:110,EHOSTDOWN:112,EHOSTUNREACH:113,EINPROGRESS:115,EALREADY:114,EDESTADDRREQ:89,EMSGSIZE:90,EPROTONOSUPPORT:93,ESOCKTNOSUPPORT:94,EADDRNOTAVAIL:99,ENETRESET:102,EISCONN:106,ENOTCONN:107,ETOOMANYREFS:109,EUSERS:87,EDQUOT:122,ESTALE:116,ENOTSUP:95,ENOMEDIUM:123,EILSEQ:84,EOVERFLOW:75,ECANCELED:125,ENOTRECOVERABLE:131,EOWNERDEAD:130,ESTRPIPE:86};
   
-  var _stdin=97808;
+  var _stdin=98688;
   
-  var _stdout=97824;
+  var _stdout=98704;
   
-  var _stderr=97840;var FS={root:null,mounts:[],devices:{},streams:[],nextInode:1,nameTable:null,currentPath:"/",initialized:false,ignorePermissions:true,trackingDelegate:{},tracking:{openFlags:{READ:1,WRITE:2}},ErrnoError:null,genericErrors:{},filesystems:null,syncFSRequests:0,handleFSError:function (e) {
+  var _stderr=98720;var FS={root:null,mounts:[],devices:{},streams:[],nextInode:1,nameTable:null,currentPath:"/",initialized:false,ignorePermissions:true,trackingDelegate:{},tracking:{openFlags:{READ:1,WRITE:2}},ErrnoError:null,genericErrors:{},filesystems:null,syncFSRequests:0,handleFSError:function (e) {
         if (!(e instanceof FS.ErrnoError)) throw e + ' : ' + stackTrace();
         return ___setErrNo(e.errno);
       },lookupPath:function (path, opts) {
@@ -6640,6 +6641,55 @@ function copyTempDouble(ptr) {
     }
 
   
+  function __registerKeyEventCallback(target, userData, useCapture, callbackfunc, eventTypeId, eventTypeString, targetThread) {
+      if (!JSEvents.keyEvent) JSEvents.keyEvent = _malloc( 164 );
+  
+      var keyEventHandlerFunc = function(event) {
+        var e = event || window.event;
+  
+        var keyEventData = JSEvents.keyEvent;
+        stringToUTF8(e.key ? e.key : "", keyEventData + 0, 32);
+        stringToUTF8(e.code ? e.code : "", keyEventData + 32, 32);
+        HEAP32[(((keyEventData)+(64))>>2)]=e.location;
+        HEAP32[(((keyEventData)+(68))>>2)]=e.ctrlKey;
+        HEAP32[(((keyEventData)+(72))>>2)]=e.shiftKey;
+        HEAP32[(((keyEventData)+(76))>>2)]=e.altKey;
+        HEAP32[(((keyEventData)+(80))>>2)]=e.metaKey;
+        HEAP32[(((keyEventData)+(84))>>2)]=e.repeat;
+        stringToUTF8(e.locale ? e.locale : "", keyEventData + 88, 32);
+        stringToUTF8(e.char ? e.char : "", keyEventData + 120, 32);
+        HEAP32[(((keyEventData)+(152))>>2)]=e.charCode;
+        HEAP32[(((keyEventData)+(156))>>2)]=e.keyCode;
+        HEAP32[(((keyEventData)+(160))>>2)]=e.which;
+  
+        if (dynCall_iiii(callbackfunc, eventTypeId, keyEventData, userData)) e.preventDefault();
+      };
+  
+      var eventHandler = {
+        target: __findEventTarget(target),
+        allowsDeferredCalls: JSEvents.isInternetExplorer() ? false : true, // MSIE doesn't allow fullscreen and pointerlock requests from key handlers, others do.
+        eventTypeString: eventTypeString,
+        callbackfunc: callbackfunc,
+        handlerFunc: keyEventHandlerFunc,
+        useCapture: useCapture
+      };
+      JSEvents.registerOrRemoveHandler(eventHandler);
+    }function _emscripten_set_keydown_callback_on_thread(target, userData, useCapture, callbackfunc, targetThread) {
+      __registerKeyEventCallback(target, userData, useCapture, callbackfunc, 2, "keydown", targetThread);
+      return 0;
+    }
+
+  function _emscripten_set_keypress_callback_on_thread(target, userData, useCapture, callbackfunc, targetThread) {
+      __registerKeyEventCallback(target, userData, useCapture, callbackfunc, 1, "keypress", targetThread);
+      return 0;
+    }
+
+  function _emscripten_set_keyup_callback_on_thread(target, userData, useCapture, callbackfunc, targetThread) {
+      __registerKeyEventCallback(target, userData, useCapture, callbackfunc, 3, "keyup", targetThread);
+      return 0;
+    }
+
+  
   
   var Browser={mainLoop:{scheduler:null,method:"",currentlyRunningMainloop:0,func:null,arg:0,timingMode:0,timingValue:0,currentFrameNumber:0,queue:[],pause:function () {
           Browser.mainLoop.scheduler = null;
@@ -7522,7 +7572,7 @@ function copyTempDouble(ptr) {
 
    
 
-  var ___dso_handle=97872;
+  var ___dso_handle=98752;
 
 FS.staticInit();Module["FS_createFolder"] = FS.createFolder;Module["FS_createPath"] = FS.createPath;Module["FS_createDataFile"] = FS.createDataFile;Module["FS_createPreloadedFile"] = FS.createPreloadedFile;Module["FS_createLazyFile"] = FS.createLazyFile;Module["FS_createLink"] = FS.createLink;Module["FS_createDevice"] = FS.createDevice;Module["FS_unlink"] = FS.unlink;;
 if (ENVIRONMENT_IS_NODE) { var fs = require("fs"); var NODEJS_PATH = require("path"); NODEFS.staticInit(); };
@@ -7740,6 +7790,7 @@ var asmLibraryArg = {
   "__emval_take_value": __emval_take_value,
   "__fillMouseEventData": __fillMouseEventData,
   "__findEventTarget": __findEventTarget,
+  "__registerKeyEventCallback": __registerKeyEventCallback,
   "__registerMouseEventCallback": __registerMouseEventCallback,
   "__registerWheelEventCallback": __registerWheelEventCallback,
   "_abort": _abort,
@@ -7753,6 +7804,9 @@ var asmLibraryArg = {
   "_emscripten_resize_heap": _emscripten_resize_heap,
   "_emscripten_set_click_callback_on_thread": _emscripten_set_click_callback_on_thread,
   "_emscripten_set_dblclick_callback_on_thread": _emscripten_set_dblclick_callback_on_thread,
+  "_emscripten_set_keydown_callback_on_thread": _emscripten_set_keydown_callback_on_thread,
+  "_emscripten_set_keypress_callback_on_thread": _emscripten_set_keypress_callback_on_thread,
+  "_emscripten_set_keyup_callback_on_thread": _emscripten_set_keyup_callback_on_thread,
   "_emscripten_set_main_loop": _emscripten_set_main_loop,
   "_emscripten_set_main_loop_timing": _emscripten_set_main_loop_timing,
   "_emscripten_set_mousedown_callback_on_thread": _emscripten_set_mousedown_callback_on_thread,

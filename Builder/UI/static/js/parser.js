@@ -192,7 +192,29 @@ float octahedron( in vec3 p, in float s)
 				}
 			]
 		}
-	]
+    ],
+    "cameras":[
+        {
+			"name":"camera",
+			"arguments":[
+				{
+					"name":"position",
+                    "type":"vec3",
+                    required: true
+                },
+                {
+					"name":"look at",
+                    "type":"vec3",
+                    required: true
+                },
+                {
+                    "name": "fov",
+                    "type":"float",
+                    required: true
+                }
+			]
+		}
+    ]
 };
 
 (function(){
@@ -242,10 +264,12 @@ float octahedron( in vec3 p, in float s)
         let df = app["data"]["distance_functions"];
         let uo = app["data"]["unary_operators"];
         let bo = app["data"]["binary_operators"];
+        let ca = app["data"]["cameras"];
 
         fillToolsSection(df,"#tools-surfaces");
         fillToolsSection(uo,"#tools-unary-operators");
         fillToolsSection(bo,"#tools-binary-operators");
+        fillToolsSection(ca,"#tools-cameras");
     }
 
     function fillToolsSection(arr, sectionId){
@@ -340,8 +364,7 @@ float octahedron( in vec3 p, in float s)
                     newObject["uuid"] = generateUuid();
                     newObject["properties"] = validateArgTypes(elem)
                     objList.set(newObject["uuid"], newObject);
-                    updateObjectsList();
-                    generateShader();
+                    updateScene();
                 break;
                 case "unary-operators":
                     let uuid = objSelect.find(":selected").val();
@@ -368,8 +391,7 @@ float octahedron( in vec3 p, in float s)
                         // Update
                         objList.set(uuid,object);
                         console.log(objList)
-                        updateObjectsList();
-                        generateShader();
+                        updateScene();
                     }
                 break;
                 case "binary-operators":
@@ -397,8 +419,7 @@ float octahedron( in vec3 p, in float s)
                         objList.set(newObject["uuid"], newObject);
                         objList.delete(uuid1);
                         objList.delete(uuid2);
-                        updateObjectsList();
-                        generateShader();
+                        updateScene();
                     }
 
                 break;
@@ -566,7 +587,7 @@ float octahedron( in vec3 p, in float s)
                         console.log(objectId)
                         if (typeof objectId !== undefined && objectId != "") {
                             app["objects"].delete(objectId);
-                            updateObjectsList();
+                            updateScene();
                         }
                     }
                   } else {
@@ -585,6 +606,11 @@ float octahedron( in vec3 p, in float s)
             objectsListNode.append($(li));
             console.log(objList);
         }
+    }
+
+    function updateScene() {
+        updateObjectsList();
+        generateShader();
     }
 
     function generateUuid() {
@@ -918,7 +944,7 @@ mat4 viewMatrix(vec3 eye, vec3 center, vec3 up) {
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
 	vec3 viewDir = rayDirection(45.0, iResolution.xy, fragCoord);
-    vec3 eye = vec3(0.0, 0.0, 10.0);
+    vec3 eye = vec3(0, 0, 10.0);
     
     mat4 viewToWorld = viewMatrix(eye, vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0));
     

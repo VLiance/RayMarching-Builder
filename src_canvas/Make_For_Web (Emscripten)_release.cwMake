@@ -4,3 +4,5 @@
 >
 -#Run Build.cwc -{_wToolchain}= "VLianceTool/WebRT"
 -{vPreloadRc}="--preload-file _out/{_sPlatform}_{_sOpt}/Rc/@Rc/"
+>
+-#Copy _out/{_sPlatform}_{_sOpt}/ ../Builder/UI/

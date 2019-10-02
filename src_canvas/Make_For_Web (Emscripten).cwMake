@@ -6,3 +6,5 @@
 -{vPreloadRc}="--preload-file _out/{_sPlatform}_{_sOpt}/Rc/@Rc/"
 >
 -#Copy _out/{_sPlatform}_{_sOpt}/ ../Builder/UI/
+>
+-#Run ../Builder/UI/index.html

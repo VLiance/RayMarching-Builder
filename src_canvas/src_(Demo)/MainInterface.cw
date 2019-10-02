@@ -104,11 +104,11 @@ package  {
 			var _nDemo : Int = 1;
 			//-------------------------------
 		
-		Debug.fTrace("---WinStart");
+	//	Debug.fTrace("---WinStart");
 		
 		
-		Debug.fTrace("---DemoRoll");
-		oDemo = new DemoRoll(this);
+	//	Debug.fTrace("---DemoRoll");
+	//	oDemo = new DemoRoll(this);
 		//oDemo = new DemoText(this);
 					
 		//		Debug.fTrace1("---FpsCount");
